@@ -2,17 +2,58 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My First App</title>
-    <!-- アプリ化のための設定 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>My Memo</title>
+    <!-- iPhoneアプリ化設定 -->
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
     <style>
-        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f0f0; }
-        h1 { color: #333; }
+        :root { --main-bg: #ffffff; --accent: #007aff; }
+        body { font-family: -apple-system, sans-serif; margin: 0; background: var(--main-bg); }
+        
+        /* ヘッダー */
+        .header { padding: 40px 20px 10px; background: #f8f8f8; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center; }
+        .header h1 { font-size: 1.2rem; margin: 0; }
+        
+        /* メモエリア */
+        #memo-area { width: 100%; height: calc(100vh - 120px); border: none; padding: 20px; font-size: 16px; outline: none; box-sizing: border-box; line-height: 1.6; }
+        
+        /* 保存ボタン（iPhone風） */
+        .save-btn { color: var(--accent); font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>Hello World</h1>
+
+    <div class="header">
+        <h1>マイメモ</h1>
+        <div class="save-btn" onclick="saveMemo()">保存</div>
+    </div>
+
+    <!-- 入力エリア -->
+    <textarea id="memo-area" placeholder="ここにメモを入力..."></textarea>
+
+    <script>
+        const memoArea = document.getElementById('memo-area');
+
+        // 1. ページを開いた時：保存されたデータを読み込む
+        window.onload = () => {
+            const savedData = localStorage.getItem('myMemoData');
+            if (savedData) {
+                memoArea.value = savedData;
+            }
+        };
+
+        // 2. 保存する時：LocalStorageに書き込む
+        function saveMemo() {
+            localStorage.setItem('myMemoData', memoArea.value);
+            alert('保存しました！');
+        }
+
+        // オプション：入力のたびに自動保存したい場合はこちらを有効に
+        // memoArea.addEventListener('input', () => {
+        //     localStorage.setItem('myMemoData', memoArea.value);
+        // });
+    </script>
 </body>
 </html>
